@@ -1,7 +1,7 @@
 const std = @import("std");
 const testing = std.testing;
 
-pub fn gravitySort32(rows: *[32]u32) void {
+pub fn gravity_sort32(rows: *[32]u32) void {
     inline for (0..32) |row| {
         rows[row] = @truncate((@as(u64, 1) << @as(u6, @intCast(@popCount(rows[row])))) - 1);
     }
@@ -13,7 +13,7 @@ inline fn swap(a: *u32, b: *u32, j: u5, m: u32) void {
     b.* ^= t << j;
 }
 
-pub inline fn transpose32x32Unrolled(A: *[32]u32) void {
+pub inline fn transpose_32x32_unrolled(A: *[32]u32) void {
     const m1: u32 = 0x0000FFFF;
     inline for (0..16) |i| swap(&A[i], &A[i + 16], 16, m1);
 
@@ -49,7 +49,7 @@ pub inline fn transpose32x32Unrolled(A: *[32]u32) void {
     }
 }
 
-pub fn hybridMergeSort(values: []u5, threshold: usize) void {
+pub fn hybrid_merge_sort(values: []u5, threshold: usize) void {
     if (values.len <= 1) return;
 
     if (values.len <= threshold) {
@@ -58,8 +58,8 @@ pub fn hybridMergeSort(values: []u5, threshold: usize) void {
     }
 
     const mid = values.len / 2;
-    hybridMergeSort(values[0..mid], threshold);
-    hybridMergeSort(values[mid..], threshold);
+    hybrid_merge_sort(values[0..mid], threshold);
+    hybrid_merge_sort(values[mid..], threshold);
 
     var temp = std.heap.page_allocator.alloc(u5, values.len) catch return;
     defer std.heap.page_allocator.free(temp);
@@ -94,7 +94,7 @@ pub fn hybridMergeSort(values: []u5, threshold: usize) void {
     @memcpy(values, temp);
 }
 
-pub fn hybridQuickSort(values: []u5, threshold: usize) void {
+pub fn hybrid_quick_sort(values: []u5, threshold: usize) void {
     if (values.len <= 1) return;
 
     if (values.len <= threshold) {
@@ -102,7 +102,7 @@ pub fn hybridQuickSort(values: []u5, threshold: usize) void {
         return;
     }
 
-    const pivot_idx = medianOfThree(values);
+    const pivot_idx = median_of_three(values);
     std.mem.swap(u5, &values[pivot_idx], &values[values.len - 1]);
     const pivot = values[values.len - 1];
 
@@ -115,11 +115,11 @@ pub fn hybridQuickSort(values: []u5, threshold: usize) void {
     }
     std.mem.swap(u5, &values[i], &values[values.len - 1]);
 
-    if (i > 0) hybridQuickSort(values[0..i], threshold);
-    if (i + 1 < values.len) hybridQuickSort(values[i + 1 ..], threshold);
+    if (i > 0) hybrid_quick_sort(values[0..i], threshold);
+    if (i + 1 < values.len) hybrid_quick_sort(values[i + 1 ..], threshold);
 }
 
-fn medianOfThree(values: []u5) usize {
+fn median_of_three(values: []u5) usize {
     const len = values.len;
     const a = 0;
     const b = len / 2;
@@ -136,7 +136,7 @@ fn medianOfThree(values: []u5) usize {
     }
 }
 
-pub fn hybridIntroSort(values: []u5, threshold: usize) void {
+pub fn hybrid_intro_sort(values: []u5, threshold: usize) void {
     const max_depth = 2 * std.math.log2_int(usize, values.len + 1);
     introSortImpl(values, threshold, max_depth);
 }
@@ -154,7 +154,7 @@ fn introSortImpl(values: []u5, threshold: usize, depth_limit: usize) void {
         return;
     }
 
-    const pivot_idx = medianOfThree(values);
+    const pivot_idx = median_of_three(values);
     std.mem.swap(u5, &values[pivot_idx], &values[values.len - 1]);
     const pivot = values[values.len - 1];
 
@@ -181,7 +181,7 @@ pub inline fn beadSort(values: []u5) void {
             matrix[i] = std.math.shl(u32, 0xFFFFFFFF, shift);
         }
     }
-    transpose32x32Unrolled(&matrix);
+    transpose_32x32_unrolled(&matrix);
     for (0..32) |i| {
         const count = @popCount(matrix[i]);
         if (count > 0) {
@@ -191,7 +191,7 @@ pub inline fn beadSort(values: []u5) void {
             matrix[i] = 0;
         }
     }
-    transpose32x32Unrolled(&matrix);
+    transpose_32x32_unrolled(&matrix);
     for (values, 0..) |*val, i| {
         val.* = @intCast(@popCount(matrix[values.len - 1 - i]));
     }
@@ -401,7 +401,7 @@ test "hybridMergeSort - correctness" {
 
     for (thresholds) |threshold| {
         var values = [_]u5{ 15, 8, 23, 4, 16, 12, 31, 2, 19, 7, 25, 11, 3, 28, 1, 20 };
-        hybridMergeSort(&values, threshold);
+        hybrid_merge_sort(&values, threshold);
 
         for (0..values.len - 1) |i| {
             try testing.expect(values[i] <= values[i + 1]);
@@ -414,7 +414,7 @@ test "hybridQuickSort - correctness" {
 
     for (thresholds) |threshold| {
         var values = [_]u5{ 15, 8, 23, 4, 16, 12, 31, 2, 19, 7, 25, 11, 3, 28, 1, 20 };
-        hybridQuickSort(&values, threshold);
+        hybrid_quick_sort(&values, threshold);
 
         for (0..values.len - 1) |i| {
             try testing.expect(values[i] <= values[i + 1]);
@@ -427,7 +427,7 @@ test "hybridIntroSort - correctness" {
 
     for (thresholds) |threshold| {
         var values = [_]u5{ 15, 8, 23, 4, 16, 12, 31, 2, 19, 7, 25, 11, 3, 28, 1, 20 };
-        hybridIntroSort(&values, threshold);
+        hybrid_intro_sort(&values, threshold);
 
         for (0..values.len - 1) |i| {
             try testing.expect(values[i] <= values[i + 1]);
@@ -472,7 +472,7 @@ test "benchmark - hybrid algorithms with various thresholds" {
             const start = std.time.nanoTimestamp();
             for (0..iterations) |_| {
                 @memcpy(values, test_data);
-                hybridMergeSort(values, threshold);
+                hybrid_merge_sort(values, threshold);
             }
             const end = std.time.nanoTimestamp();
             const avg = @divTrunc(end - start, iterations);
@@ -493,7 +493,7 @@ test "benchmark - hybrid algorithms with various thresholds" {
             const start = std.time.nanoTimestamp();
             for (0..iterations) |_| {
                 @memcpy(values, test_data);
-                hybridQuickSort(values, threshold);
+                hybrid_quick_sort(values, threshold);
             }
             const end = std.time.nanoTimestamp();
             const avg = @divTrunc(end - start, iterations);
@@ -514,7 +514,7 @@ test "benchmark - hybrid algorithms with various thresholds" {
             const start = std.time.nanoTimestamp();
             for (0..iterations) |_| {
                 @memcpy(values, test_data);
-                hybridIntroSort(values, threshold);
+                hybrid_intro_sort(values, threshold);
             }
             const end = std.time.nanoTimestamp();
             const avg = @divTrunc(end - start, iterations);
