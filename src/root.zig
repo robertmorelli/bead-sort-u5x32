@@ -53,7 +53,7 @@ pub fn hybrid_merge_sort(values: []u5, threshold: usize) void {
     if (values.len <= 1) return;
 
     if (values.len <= threshold) {
-        beadSort(values);
+        bead_sort(values);
         return;
     }
 
@@ -98,7 +98,7 @@ pub fn hybrid_quick_sort(values: []u5, threshold: usize) void {
     if (values.len <= 1) return;
 
     if (values.len <= threshold) {
-        beadSort(values);
+        bead_sort(values);
         return;
     }
 
@@ -138,14 +138,14 @@ fn median_of_three(values: []u5) usize {
 
 pub fn hybrid_intro_sort(values: []u5, threshold: usize) void {
     const max_depth = 2 * std.math.log2_int(usize, values.len + 1);
-    introSortImpl(values, threshold, max_depth);
+    intro_sort_impl(values, threshold, max_depth);
 }
 
-fn introSortImpl(values: []u5, threshold: usize, depth_limit: usize) void {
+fn intro_sort_impl(values: []u5, threshold: usize, depth_limit: usize) void {
     if (values.len <= 1) return;
 
     if (values.len <= threshold) {
-        beadSort(values);
+        bead_sort(values);
         return;
     }
 
@@ -167,11 +167,11 @@ fn introSortImpl(values: []u5, threshold: usize, depth_limit: usize) void {
     }
     std.mem.swap(u5, &values[i], &values[values.len - 1]);
 
-    if (i > 0) introSortImpl(values[0..i], threshold, depth_limit - 1);
-    if (i + 1 < values.len) introSortImpl(values[i + 1 ..], threshold, depth_limit - 1);
+    if (i > 0) intro_sort_impl(values[0..i], threshold, depth_limit - 1);
+    if (i + 1 < values.len) intro_sort_impl(values[i + 1 ..], threshold, depth_limit - 1);
 }
 
-pub inline fn beadSort(values: []u5) void {
+pub inline fn bead_sort(values: []u5) void {
     if (values.len == 0) return;
     std.debug.assert(values.len <= 32);
     var matrix: [32]u32 = [_]u32{0} ** 32;
@@ -199,84 +199,84 @@ pub inline fn beadSort(values: []u5) void {
 
 test "beadSort - empty array" {
     var values: [0]u5 = undefined;
-    beadSort(&values);
+    bead_sort(&values);
 }
 
 test "beadSort - single element" {
     var values = [_]u5{15};
-    beadSort(&values);
+    bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{15}, &values);
 }
 
 test "beadSort - two elements sorted" {
     var values = [_]u5{ 5, 10 };
-    beadSort(&values);
+    bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 5, 10 }, &values);
 }
 
 test "beadSort - two elements unsorted" {
     var values = [_]u5{ 10, 5 };
-    beadSort(&values);
+    bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 5, 10 }, &values);
 }
 
 test "beadSort - all zeros" {
     var values = [_]u5{ 0, 0, 0, 0, 0 };
-    beadSort(&values);
+    bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 0, 0, 0, 0, 0 }, &values);
 }
 
 test "beadSort - all same value" {
     var values = [_]u5{ 7, 7, 7, 7, 7 };
-    beadSort(&values);
+    bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 7, 7, 7, 7, 7 }, &values);
 }
 
 test "beadSort - already sorted" {
     var values = [_]u5{ 1, 2, 3, 4, 5 };
-    beadSort(&values);
+    bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 1, 2, 3, 4, 5 }, &values);
 }
 
 test "beadSort - reverse sorted" {
     var values = [_]u5{ 5, 4, 3, 2, 1 };
-    beadSort(&values);
+    bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 1, 2, 3, 4, 5 }, &values);
 }
 
 test "beadSort - random order small" {
     var values = [_]u5{ 3, 1, 4, 1, 5, 9, 2, 6 };
-    beadSort(&values);
+    bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 1, 1, 2, 3, 4, 5, 6, 9 }, &values);
 }
 
 test "beadSort - with zeros" {
     var values = [_]u5{ 5, 0, 3, 0, 1, 0, 2 };
-    beadSort(&values);
+    bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 0, 0, 0, 1, 2, 3, 5 }, &values);
 }
 
 test "beadSort - maximum values" {
     var values = [_]u5{ 31, 31, 31 };
-    beadSort(&values);
+    bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 31, 31, 31 }, &values);
 }
 
 test "beadSort - mix with max values" {
     var values = [_]u5{ 31, 0, 15, 1, 30, 2 };
-    beadSort(&values);
+    bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 0, 1, 2, 15, 30, 31 }, &values);
 }
 
 test "beadSort - full range" {
     var values = [_]u5{ 10, 20, 5, 15, 25, 0, 30, 31, 1, 29 };
-    beadSort(&values);
+    bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 0, 1, 5, 10, 15, 20, 25, 29, 30, 31 }, &values);
 }
 
 test "beadSort - 16 elements" {
     var values = [_]u5{ 15, 8, 23, 4, 16, 12, 31, 2, 19, 7, 25, 11, 3, 28, 1, 20 };
-    beadSort(&values);
+    bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 1, 2, 3, 4, 7, 8, 11, 12, 15, 16, 19, 20, 23, 25, 28, 31 }, &values);
 }
 
@@ -286,7 +286,7 @@ test "beadSort - 32 elements (maximum)" {
         25, 6,  18, 29, 1,  14, 22, 7,  20, 30, 3,
         11, 26, 5,  17, 28, 0,  13, 24, 10, 21,
     };
-    beadSort(&values);
+    bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{
         0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,
         11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
@@ -296,56 +296,56 @@ test "beadSort - 32 elements (maximum)" {
 
 test "beadSort - duplicates throughout" {
     var values = [_]u5{ 5, 3, 5, 1, 3, 5, 1, 3, 1 };
-    beadSort(&values);
+    bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 1, 1, 1, 3, 3, 3, 5, 5, 5 }, &values);
 }
 
 test "beadSort - mostly duplicates" {
     var values = [_]u5{ 7, 7, 7, 7, 7, 7, 3, 7, 7, 7, 15, 7 };
-    beadSort(&values);
+    bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 15 }, &values);
 }
 
 test "beadSort - alternating pattern" {
     var values = [_]u5{ 1, 31, 1, 31, 1, 31, 1, 31 };
-    beadSort(&values);
+    bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 1, 1, 1, 1, 31, 31, 31, 31 }, &values);
 }
 
 test "beadSort - sequential with gaps" {
     var values = [_]u5{ 20, 10, 30, 0, 5, 15, 25 };
-    beadSort(&values);
+    bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 0, 5, 10, 15, 20, 25, 30 }, &values);
 }
 
 test "beadSort - powers of two" {
     var values = [_]u5{ 16, 1, 8, 4, 2 };
-    beadSort(&values);
+    bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 1, 2, 4, 8, 16 }, &values);
 }
 
 test "beadSort - stability check with metadata" {
     // While bead sort is not stable in general, we can verify it sorts correctly
     var values = [_]u5{ 5, 5, 5, 3, 3, 3 };
-    beadSort(&values);
+    bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 3, 3, 3, 5, 5, 5 }, &values);
 }
 
 test "beadSort - worst case for gravity (all descending)" {
     var values = [_]u5{ 20, 19, 18, 17, 16, 15, 14, 13, 12, 11 };
-    beadSort(&values);
+    bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 }, &values);
 }
 
 test "beadSort - prime numbers" {
     var values = [_]u5{ 29, 13, 17, 2, 23, 19, 11, 7, 5, 3, 31 };
-    beadSort(&values);
+    bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31 }, &values);
 }
 
 test "beadSort - fibonacci-like sequence" {
     var values = [_]u5{ 21, 8, 13, 5, 3, 2, 1, 1 };
-    beadSort(&values);
+    bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 1, 1, 2, 3, 5, 8, 13, 21 }, &values);
 }
 
@@ -356,7 +356,7 @@ test "beadSort - 32 elements (maximum capacity)" {
         values[i] = @intCast(31 - i);
     }
 
-    beadSort(&values);
+    bead_sort(&values);
 
     for (0..32) |i| {
         try testing.expectEqual(@as(u5, @intCast(i)), values[i]);
@@ -369,7 +369,7 @@ test "beadSort - 32 elements random pattern" {
         25, 6,  18, 29, 1,  14, 22, 7,  20, 30, 3,
         11, 26, 5,  17, 28, 0,  13, 24, 10, 21,
     };
-    beadSort(&values);
+    bead_sort(&values);
 
     try testing.expectEqualSlices(u5, &[_]u5{
         0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,
@@ -385,7 +385,7 @@ test "beadSort - performance with 32 random values" {
     }
 
     const start = std.time.nanoTimestamp();
-    beadSort(&values);
+    bead_sort(&values);
     const end = std.time.nanoTimestamp();
 
     for (0..31) |i| {
@@ -580,7 +580,7 @@ test "benchmark - beadSort vs std.sort.insertion vs std.mem.sort" {
         const bead_start = std.time.nanoTimestamp();
         for (0..iterations) |_| {
             values1 = pattern.data;
-            beadSort(&values1);
+            bead_sort(&values1);
         }
         const bead_end = std.time.nanoTimestamp();
         const bead_total = bead_end - bead_start;
@@ -604,7 +604,7 @@ test "benchmark - beadSort vs std.sort.insertion vs std.mem.sort" {
         const pdq_total = pdq_end - pdq_start;
 
         // Verify all produce same result
-        beadSort(&values1);
+        bead_sort(&values1);
         std.sort.insertion(u5, &values2, {}, std.sort.asc(u5));
         std.mem.sort(u5, &values3, {}, std.sort.asc(u5));
         try testing.expectEqualSlices(u5, &values1, &values2);
