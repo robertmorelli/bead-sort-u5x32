@@ -197,90 +197,90 @@ pub inline fn bead_sort(values: []u5) void {
     }
 }
 
-test "beadSort - empty array" {
+test "bead_sort - empty array" {
     var values: [0]u5 = undefined;
     bead_sort(&values);
 }
 
-test "beadSort - single element" {
+test "bead_sort - single element" {
     var values = [_]u5{15};
     bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{15}, &values);
 }
 
-test "beadSort - two elements sorted" {
+test "bead_sort - two elements sorted" {
     var values = [_]u5{ 5, 10 };
     bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 5, 10 }, &values);
 }
 
-test "beadSort - two elements unsorted" {
+test "bead_sort - two elements unsorted" {
     var values = [_]u5{ 10, 5 };
     bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 5, 10 }, &values);
 }
 
-test "beadSort - all zeros" {
+test "bead_sort - all zeros" {
     var values = [_]u5{ 0, 0, 0, 0, 0 };
     bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 0, 0, 0, 0, 0 }, &values);
 }
 
-test "beadSort - all same value" {
+test "bead_sort - all same value" {
     var values = [_]u5{ 7, 7, 7, 7, 7 };
     bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 7, 7, 7, 7, 7 }, &values);
 }
 
-test "beadSort - already sorted" {
+test "bead_sort - already sorted" {
     var values = [_]u5{ 1, 2, 3, 4, 5 };
     bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 1, 2, 3, 4, 5 }, &values);
 }
 
-test "beadSort - reverse sorted" {
+test "bead_sort - reverse sorted" {
     var values = [_]u5{ 5, 4, 3, 2, 1 };
     bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 1, 2, 3, 4, 5 }, &values);
 }
 
-test "beadSort - random order small" {
+test "bead_sort - random order small" {
     var values = [_]u5{ 3, 1, 4, 1, 5, 9, 2, 6 };
     bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 1, 1, 2, 3, 4, 5, 6, 9 }, &values);
 }
 
-test "beadSort - with zeros" {
+test "bead_sort - with zeros" {
     var values = [_]u5{ 5, 0, 3, 0, 1, 0, 2 };
     bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 0, 0, 0, 1, 2, 3, 5 }, &values);
 }
 
-test "beadSort - maximum values" {
+test "bead_sort - maximum values" {
     var values = [_]u5{ 31, 31, 31 };
     bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 31, 31, 31 }, &values);
 }
 
-test "beadSort - mix with max values" {
+test "bead_sort - mix with max values" {
     var values = [_]u5{ 31, 0, 15, 1, 30, 2 };
     bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 0, 1, 2, 15, 30, 31 }, &values);
 }
 
-test "beadSort - full range" {
+test "bead_sort - full range" {
     var values = [_]u5{ 10, 20, 5, 15, 25, 0, 30, 31, 1, 29 };
     bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 0, 1, 5, 10, 15, 20, 25, 29, 30, 31 }, &values);
 }
 
-test "beadSort - 16 elements" {
+test "bead_sort - 16 elements" {
     var values = [_]u5{ 15, 8, 23, 4, 16, 12, 31, 2, 19, 7, 25, 11, 3, 28, 1, 20 };
     bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 1, 2, 3, 4, 7, 8, 11, 12, 15, 16, 19, 20, 23, 25, 28, 31 }, &values);
 }
 
-test "beadSort - 32 elements (maximum)" {
+test "bead_sort - 32 elements (maximum)" {
     var values = [_]u5{
         15, 23, 8,  19, 31, 4,  12, 27, 2,  16, 9,
         25, 6,  18, 29, 1,  14, 22, 7,  20, 30, 3,
@@ -294,62 +294,62 @@ test "beadSort - 32 elements (maximum)" {
     }, &values);
 }
 
-test "beadSort - duplicates throughout" {
+test "bead_sort - duplicates throughout" {
     var values = [_]u5{ 5, 3, 5, 1, 3, 5, 1, 3, 1 };
     bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 1, 1, 1, 3, 3, 3, 5, 5, 5 }, &values);
 }
 
-test "beadSort - mostly duplicates" {
+test "bead_sort - mostly duplicates" {
     var values = [_]u5{ 7, 7, 7, 7, 7, 7, 3, 7, 7, 7, 15, 7 };
     bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 15 }, &values);
 }
 
-test "beadSort - alternating pattern" {
+test "bead_sort - alternating pattern" {
     var values = [_]u5{ 1, 31, 1, 31, 1, 31, 1, 31 };
     bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 1, 1, 1, 1, 31, 31, 31, 31 }, &values);
 }
 
-test "beadSort - sequential with gaps" {
+test "bead_sort - sequential with gaps" {
     var values = [_]u5{ 20, 10, 30, 0, 5, 15, 25 };
     bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 0, 5, 10, 15, 20, 25, 30 }, &values);
 }
 
-test "beadSort - powers of two" {
+test "bead_sort - powers of two" {
     var values = [_]u5{ 16, 1, 8, 4, 2 };
     bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 1, 2, 4, 8, 16 }, &values);
 }
 
-test "beadSort - stability check with metadata" {
+test "bead_sort - stability check with metadata" {
     // While bead sort is not stable in general, we can verify it sorts correctly
     var values = [_]u5{ 5, 5, 5, 3, 3, 3 };
     bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 3, 3, 3, 5, 5, 5 }, &values);
 }
 
-test "beadSort - worst case for gravity (all descending)" {
+test "bead_sort - worst case for gravity (all descending)" {
     var values = [_]u5{ 20, 19, 18, 17, 16, 15, 14, 13, 12, 11 };
     bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 }, &values);
 }
 
-test "beadSort - prime numbers" {
+test "bead_sort - prime numbers" {
     var values = [_]u5{ 29, 13, 17, 2, 23, 19, 11, 7, 5, 3, 31 };
     bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31 }, &values);
 }
 
-test "beadSort - fibonacci-like sequence" {
+test "bead_sort - fibonacci-like sequence" {
     var values = [_]u5{ 21, 8, 13, 5, 3, 2, 1, 1 };
     bead_sort(&values);
     try testing.expectEqualSlices(u5, &[_]u5{ 1, 1, 2, 3, 5, 8, 13, 21 }, &values);
 }
 
-test "beadSort - 32 elements (maximum capacity)" {
+test "bead_sort - 32 elements (maximum capacity)" {
     var values: [32]u5 = undefined;
     // Fill with reverse order
     for (0..32) |i| {
@@ -363,7 +363,7 @@ test "beadSort - 32 elements (maximum capacity)" {
     }
 }
 
-test "beadSort - 32 elements random pattern" {
+test "bead_sort - 32 elements random pattern" {
     var values = [_]u5{
         15, 23, 8,  19, 31, 4,  12, 27, 2,  16, 9,
         25, 6,  18, 29, 1,  14, 22, 7,  20, 30, 3,
@@ -378,7 +378,7 @@ test "beadSort - 32 elements random pattern" {
     }, &values);
 }
 
-test "beadSort - performance with 32 random values" {
+test "bead_sort - performance with 32 random values" {
     var values: [32]u5 = undefined;
     for (0..32) |i| {
         values[i] = @intCast((i * 37) % 32);
@@ -396,7 +396,7 @@ test "beadSort - performance with 32 random values" {
     std.debug.print("\nBead sort (32 elements) took: {} ns\n", .{duration_ns});
 }
 
-test "hybridMergeSort - correctness" {
+test "hybrid_merge_sort - correctness" {
     const thresholds = [_]usize{ 4, 8, 16, 32 };
 
     for (thresholds) |threshold| {
@@ -409,7 +409,7 @@ test "hybridMergeSort - correctness" {
     }
 }
 
-test "hybridQuickSort - correctness" {
+test "hybrid_quick_sort - correctness" {
     const thresholds = [_]usize{ 4, 8, 16, 32 };
 
     for (thresholds) |threshold| {
@@ -422,7 +422,7 @@ test "hybridQuickSort - correctness" {
     }
 }
 
-test "hybridIntroSort - correctness" {
+test "hybrid_intro_sort - correctness" {
     const thresholds = [_]usize{ 4, 8, 16, 32 };
 
     for (thresholds) |threshold| {
@@ -478,7 +478,7 @@ test "benchmark - hybrid algorithms with various thresholds" {
             const avg = @divTrunc(end - start, iterations);
 
             var label_buf: [50]u8 = undefined;
-            const label = std.fmt.bufPrint(&label_buf, "hybridMergeSort (threshold={d})", .{threshold}) catch unreachable;
+            const label = std.fmt.bufPrint(&label_buf, "hybrid_merge_sort (threshold={d})", .{threshold}) catch unreachable;
             std.debug.print("{s: <50} {d: >15}", .{ label, avg });
 
             if (avg < std_avg) {
@@ -499,7 +499,7 @@ test "benchmark - hybrid algorithms with various thresholds" {
             const avg = @divTrunc(end - start, iterations);
 
             var label_buf: [50]u8 = undefined;
-            const label = std.fmt.bufPrint(&label_buf, "hybridQuickSort (threshold={d})", .{threshold}) catch unreachable;
+            const label = std.fmt.bufPrint(&label_buf, "hybrid_quick_sort (threshold={d})", .{threshold}) catch unreachable;
             std.debug.print("{s: <50} {d: >15}", .{ label, avg });
 
             if (avg < std_avg) {
@@ -520,7 +520,7 @@ test "benchmark - hybrid algorithms with various thresholds" {
             const avg = @divTrunc(end - start, iterations);
 
             var label_buf: [50]u8 = undefined;
-            const label = std.fmt.bufPrint(&label_buf, "hybridIntroSort (threshold={d})", .{threshold}) catch unreachable;
+            const label = std.fmt.bufPrint(&label_buf, "hybrid_intro_sort (threshold={d})", .{threshold}) catch unreachable;
             std.debug.print("{s: <50} {d: >15}", .{ label, avg });
 
             if (avg < std_avg) {
@@ -537,7 +537,7 @@ test "benchmark - hybrid algorithms with various thresholds" {
     std.debug.print("=== END HYBRID TUNING ===\n\n", .{});
 }
 
-test "benchmark - beadSort vs std.sort.insertion vs std.mem.sort" {
+test "benchmark - bead_sort vs std.sort.insertion vs std.mem.sort" {
     const iterations = 10000;
 
     // Test data: various patterns
@@ -576,7 +576,7 @@ test "benchmark - beadSort vs std.sort.insertion vs std.mem.sort" {
         var values2: [32]u5 = pattern.data;
         var values3: [32]u5 = pattern.data;
 
-        // Benchmark beadSort
+        // Benchmark bead_sort
         const bead_start = std.time.nanoTimestamp();
         for (0..iterations) |_| {
             values1 = pattern.data;
@@ -616,7 +616,7 @@ test "benchmark - beadSort vs std.sort.insertion vs std.mem.sort" {
         const pdq_avg = @divTrunc(pdq_total, iterations);
 
         std.debug.print("Pattern: {s: <12}\n", .{pattern.name});
-        std.debug.print("  beadSort:           {d: >6} ns/iter  (total: {d: >10} ns)\n", .{ bead_avg, bead_total });
+        std.debug.print("  bead_sort:           {d: >6} ns/iter  (total: {d: >10} ns)\n", .{ bead_avg, bead_total });
         std.debug.print("  std.sort.insertion: {d: >6} ns/iter  (total: {d: >10} ns)  ", .{ insertion_avg, insertion_total });
         if (bead_avg < insertion_avg) {
             const speedup = @divTrunc(insertion_avg * 100, bead_avg);
